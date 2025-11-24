@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        /* Design System */
+        :root {
+            /* Primitive Color Tokens */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-slate-500-rgb: 98, 108, 113;
+
+            --color-bg-1: rgba(59, 130, 246, 0.08);
+            --color-bg-2: rgba(245, 158, 11, 0.08);
+            --color-bg-3: rgba(34, 197, 94, 0.08);
+            --color-bg-4: rgba(239, 68, 68, 0.08);
+            --color-bg-5: rgba(147, 51, 234, 0.08);
+
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-teal-500);
+
+            --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-xs: 11px;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.5;
+
+            --space-4: 4px;
+            --space-6: 6px;
+            --space-8: 8px;
+            --space-10: 10px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-teal-300-rgb: 50, 184, 198;
+                --color-gray-300-rgb: 167, 169, 169;
+                --color-gray-200-rgb: 245, 245, 245;
+
+                --color-bg-1: rgba(29, 78, 216, 0.15);
+                --color-bg-2: rgba(180, 83, 9, 0.15);
+                --color-bg-3: rgba(21, 128, 61, 0.15);
+                --color-bg-4: rgba(185, 28, 28, 0.15);
+                --color-bg-5: rgba(107, 33, 168, 0.15);
+
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+                --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+                --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+                --color-error: var(--color-red-400);
+            }
+        }
+
+        @font-face {
+            font-family: 'FKGroteskNeue';
+            src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: var(--line-height-normal);
+            padding: var(--space-20);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-32);
+        }
+
+        .header h1 {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .header p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-lg);
+        }
+
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            margin-bottom: var(--space-20);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .add-task-form {
+            display: flex;
+            gap: var(--space-12);
+            margin-bottom: var(--space-20);
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+        }
+
+        .form-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+        }
+
+        .form-input {
+            padding: var(--space-10) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--ease-standard);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .form-select {
+            padding: var(--space-10) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: var(--space-10) var(--space-20);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-standard);
+            font-family: var(--font-family-base);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-small {
+            padding: var(--space-6) var(--space-12);
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-icon {
+            padding: var(--space-6);
+            background: transparent;
+            color: var(--color-text-secondary);
+            border: none;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .btn-icon:hover {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            gap: var(--space-16);
+            margin-bottom: var(--space-24);
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-4);
+        }
+
+        .filters {
+            display: flex;
+            gap: var(--space-8);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-20);
+        }
+
+        .filter-btn {
+            padding: var(--space-8) var(--space-16);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .filter-btn:hover {
+            background: var(--color-secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .tasks-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+            padding: var(--space-16);
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-12);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .task-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .task-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+        }
+
+        .task-text-input {
+            flex: 1;
+            padding: var(--space-6) var(--space-8);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-6);
+            padding: var(--space-4) var(--space-10);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            white-space: nowrap;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-32);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-16);
+        }
+
+        .clear-completed {
+            width: 100%;
+            margin-top: var(--space-16);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: var(--space-12);
+            }
+
+            .add-task-form {
+                flex-direction: column;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: var(--space-12);
+            }
+
+            .header h1 {
+                font-size: var(--font-size-3xl);
+            }
+
+            .task-item {
+                flex-wrap: wrap;
+            }
+
+            .task-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✓ To-Do List</h1>
+            <p>Organizza le tue attività quotidiane</p>
+        </div>
+
+        <div class="card">
+            <form class="add-task-form" id="addTaskForm">
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label" for="taskInput">Nuova Attività</label>
+                    <input 
+                        type="text" 
+                        id="taskInput" 
+                        class="form-input" 
+                        placeholder="Inserisci un'attività..."
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="categorySelect">Categoria</label>
+                    <select id="categorySelect" class="form-select">
+                        <option value="Work">Lavoro</option>
+                        <option value="Personal">Personale</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Health">Salute</option>
+                    </select>
+                </div>
+                <div class="form-group" style="justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary">Aggiungi</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalTasks">0</span>
+                    <span class="stat-label">Totali</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="completedTasks">0</span>
+                    <span class="stat-label">Completate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="remainingTasks">0</span>
+                    <span class="stat-label">Rimanenti</span>
+                </div>
+            </div>
+
+            <div class="filters" id="filters">
+                <button class="filter-btn active" data-category="all">Tutte</button>
+                <button class="filter-btn" data-category="Work">Lavoro</button>
+                <button class="filter-btn" data-category="Personal">Personale</button>
+                <button class="filter-btn" data-category="Shopping">Shopping</button>
+                <button class="filter-btn" data-category="Health">Salute</button>
+            </div>
+
+            <ul class="tasks-list" id="tasksList"></ul>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">📝</div>
+                <p>Nessuna attività. Inizia aggiungendone una!</p>
+            </div>
+
+            <button class="btn btn-secondary clear-completed" id="clearCompleted">Cancella Completate</button>
+        </div>
+    </div>
+
+    <script>
+        // Categories configuration
+        const categories = {
+            Work: { color: '#2184d3', bg: 'rgba(33, 132, 211, 0.1)', icon: '💼' },
+            Personal: { color: '#9c27b0', bg: 'rgba(156, 39, 176, 0.1)', icon: '👤' },
+            Shopping: { color: '#ff9800', bg: 'rgba(255, 152, 0, 0.1)', icon: '🛒' },
+            Health: { color: '#4caf50', bg: 'rgba(76, 175, 80, 0.1)', icon: '❤️' }
+        };
+
+        // State - using in-memory storage
+        let tasks = [
+            { id: 1, text: 'Review project proposal', category: 'Work', completed: false },
+            { id: 2, text: 'Buy groceries', category: 'Shopping', completed: false },
+            { id: 3, text: 'Morning exercise', category: 'Health', completed: false },
+            { id: 4, text: 'Schedule client meeting', category: 'Work', completed: true }
+        ];
+        let currentFilter = 'all';
+        let nextId = 5;
+
+        // DOM elements
+        const taskInput = document.getElementById('taskInput');
+        const categorySelect = document.getElementById('categorySelect');
+        const addTaskForm = document.getElementById('addTaskForm');
+        const tasksList = document.getElementById('tasksList');
+        const emptyState = document.getElementById('emptyState');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const clearCompletedBtn = document.getElementById('clearCompleted');
+
+        // Initialize app
+        function init() {
+            renderTasks();
+            updateStats();
+            attachEventListeners();
+        }
+
+        // Attach event listeners
+        function attachEventListeners() {
+            addTaskForm.addEventListener('submit', handleAddTask);
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', handleFilterChange);
+            });
+            clearCompletedBtn.addEventListener('click', handleClearCompleted);
+        }
+
+        // Add new task
+        function handleAddTask(e) {
+            e.preventDefault();
+            const text = taskInput.value.trim();
+            const category = categorySelect.value;
+
+            if (text === '') return;
+
+            const newTask = {
+                id: nextId++,
+                text,
+                category,
+                completed: false
+            };
+
+            tasks.push(newTask);
+            taskInput.value = '';
+            renderTasks();
+            updateStats();
+        }
+
+        // Toggle task completion
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks();
+                updateStats();
+            }
+        }
+
+        // Delete task
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            renderTasks();
+            updateStats();
+        }
+
+        // Edit task
+        function editTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            const taskElement = document.querySelector(`[data-task-id="${id}"]`);
+            const taskTextElement = taskElement.querySelector('.task-text');
+            const currentText = task.text;
+
+            // Create input
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'task-text-input';
+            input.value = currentText;
+
+            // Replace text with input
+            taskTextElement.replaceWith(input);
+            input.focus();
+            input.select();
+
+            // Handle save
+            const saveEdit = () => {
+                const newText = input.value.trim();
+                if (newText && newText !== currentText) {
+                    task.text = newText;
+                }
+                renderTasks();
+            };
+
+            input.addEventListener('blur', saveEdit);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    saveEdit();
+                }
+            });
+        }
+
+        // Filter tasks
+        function handleFilterChange(e) {
+            const category = e.target.dataset.category;
+            currentFilter = category;
+
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            renderTasks();
+        }
+
+        // Clear completed tasks
+        function handleClearCompleted() {
+            tasks = tasks.filter(t => !t.completed);
+            renderTasks();
+            updateStats();
+        }
+
+        // Render tasks
+        function renderTasks() {
+            const filteredTasks = currentFilter === 'all' 
+                ? tasks 
+                : tasks.filter(t => t.category === currentFilter);
+
+            if (filteredTasks.length === 0) {
+                tasksList.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            tasksList.style.display = 'block';
+            emptyState.style.display = 'none';
+
+            tasksList.innerHTML = filteredTasks.map(task => {
+                const category = categories[task.category];
+                return `
+                    <li class="task-item ${task.completed ? 'completed' : ''}" data-task-id="${task.id}">
+                        <input 
+                            type="checkbox" 
+                            class="task-checkbox" 
+                            ${task.completed ? 'checked' : ''}
+                            onchange="toggleTask(${task.id})"
+                        >
+                        <div class="task-content">
+                            <span class="task-text">${task.text}</span>
+                            <span class="category-badge" style="background: ${category.bg}; color: ${category.color}; border: 1px solid ${category.color};">
+                                <span>${category.icon}</span>
+                                <span>${task.category}</span>
+                            </span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="btn-icon" onclick="editTask(${task.id})" title="Modifica">
+                                ✏️
+                            </button>
+                            <button class="btn-icon" onclick="deleteTask(${task.id})" title="Elimina">
+                                🗑️
+                            </button>
+                        </div>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const remaining = total - completed;
+
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('remainingTasks').textContent = remaining;
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
